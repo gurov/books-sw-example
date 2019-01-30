@@ -1,20 +1,46 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
+<div class="container">
+  <h1 class="mc-display-1">
+    Books <small class="mc-small-text" *ngIf="!newVersionIsAvailable">Press "Enter" for search</small>
+    <button *ngIf="newVersionIsAvailable"
+            (click)="reload()"
+            mc-button
+            color="primary"
+            class="layout-margin-sm">New version!</button>
   </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+  
+  <div class="search-box">
+    <mc-form-field>
+        <input mcInput [placeholder]="'Enter a book name'" (keydown.enter)="q.next(value)" [(ngModel)]="value">         
+    </mc-form-field>
+  </div>
+  
+  <div class="links">
+      <a class="mc-link mc-link_dashed" *ngFor="let w of lastQ" (click)="q.next(w); value = w;">
+          <span class="mc-link__text">{{w}}</span>
+      </a>
+  </div>
+  <hr>  
+  <div>
+
+    <div class="layout-row layout-wrap block">
+
+      <div [hidden]="!loading">
+        Loading ...
+      </div>
+      <div *ngIf="books.length === 0">
+        No books
+      </div>
+      <div [hidden]="loading" class="book-card" *ngFor="let book of books">
+        <img [src]="book?.volumeInfo?.imageLinks?.thumbnail"
+             onError="this.src='/assets/no-img.jpg';">
+        <div class="mc-subheading">{{book?.volumeInfo?.title}}</div>
+        <div class="mc-body">{{book?.volumeInfo?.authors?.join(', ')}}</div>
+      </div>
+
+
+    </div>
+
+  </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
